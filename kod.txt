@@ -1,0 +1,127 @@
+literalArray2 := 'C:\Users\Mica\Desktop\dsl2.txt' asFileReference readStreamDo: [ :in |
+ Array streamContents: [ :out |
+ [ in atEnd ] whileFalse: [ out nextPut: in nextLine ] ] ].
+
+prvi := literalArray2 first.
+
+processName := prvi copyFrom: 9 to: ((prvi size) -3). 
+processId := 1.
+
+drugi := literalArray2 second .
+treci := literalArray2 third .
+initialFlowElementName := drugi copyFrom: 17 to: ((drugi size)-2).
+se := NWStartEvent new.
+se description:  initialFlowElementName.
+
+drugiTokeni := drugi findTokens: '"'.
+drugiTokeniPrvi := drugiTokeni at: 1 .
+drugiTokeniPrvi = '	initial state '
+ifTrue: [ se:= NWStartEvent new. ].
+drugiTokeniDrugi := drugiTokeni at: 2.
+drugiTokeniDrugi = 'A StartEvent'
+	ifTrue: [ se:= NWStartEvent new.  ] .
+	
+treci := literalArray2 at: 3 .
+treciTokeni := treci findTokens: '"'.
+treciTokeni at: 2.
+se description: (treciTokeni at: 2).
+
+cetvrti := literalArray2 at: 4 .
+cetvrtiTokeni := cetvrti findTokens: '"'.
+cetvrtiTokeniDrugi := cetvrtiTokeni at: 2.
+cetvrtiTokeniDrugi = 'A ScriptTask'
+	ifTrue: [ t1:= NWScriptTask new. 
+		se addOutgoingEdge: t1. ] . "Ovde fali opis i script, kad se dodje do njega da se popuni"
+	
+peti := literalArray2 at: 5 .
+peti = ''
+	ifTrue: [].
+
+sesti := literalArray2 at: 6 .
+sestiTokeni := sesti findTokens: '"'.
+(sestiTokeni at: 2) = 'A ScriptTask'
+	ifTrue: [ t1 description: (((literalArray2 at: 7 ) findTokens: '"') at: 2) ].
+
+osmi := literalArray2 at: 8 .
+osmiTokeni := osmi findTokens: '"'.
+(osmiTokeni at: 1) = '		script '
+	ifTrue: [ t1 script: [ osmiTokeni at: 2 ] ].
+	
+deveti := literalArray2 at: 9.
+devetiTokeni := deveti findTokens: '"'.
+(devetiTokeni at: 1 ) = '		go to '
+	ifTrue: [ (devetiTokeni at: 2) = 'An Exclusive' 
+		ifTrue: [ exclusive:= NWExclusive new.]] .
+
+deseti := literalArray2 at: 10.
+
+jedanaest := literalArray2 at: 11.
+jedanaestTokeni := jedanaest findTokens: '"'.
+(jedanaestTokeni at: 1) = '	final state '
+	ifTrue: [ ee := NWEndEvent new. t1 addOutgoingEdge: exclusive ] .
+
+dvanaest := literalArray2 at: 12.
+dvanaestTokeni := dvanaest findTokens: '"'.
+(dvanaestTokeni at: 1) = '	        description '
+	ifTrue: [ ee description: (dvanaestTokeni at: 2) ].
+
+trinaest := literalArray2 at: 13.
+
+cetrnaest := literalArray2 at: 14.
+cetrnaestTokeni := cetrnaest findTokens: '"'.
+cetrnaestTokeni at: 2.
+((cetrnaestTokeni at: 2) copyFrom: 1 to: ((((cetrnaestTokeni at: 2) size)-2))) = 'A BaseTask'
+	ifTrue: [ t2 := NWBaseTask new. ]. "Ovde fale description i value "
+
+petnaest := literalArray2 at: 15.
+petnaestTokeni := petnaest findTokens: '"'.
+(petnaestTokeni at: 1) = '	        description '
+	ifTrue: [ t2 description: (petnaestTokeni at: 2) ].
+	
+sesnaest := literalArray2 at: 16.
+sesnaestTokeni := sesnaest findTokens: '"'.
+(sesnaestTokeni at:1) = '		value '
+		ifTrue: [ t2 value:  (sesnaestTokeni at:2) ].
+
+sedamnaest := literalArray2 at: 17.
+sedamnaestTokeni := sedamnaest findTokens: '"'.
+(sedamnaestTokeni at:1) = '		go to '
+		ifTrue: [ (sedamnaestTokeni at:2) = 'An EndEvent' 
+			ifTrue: [ t2 addOutgoingEdge: ee.]].
+
+osamnaest := literalArray2 at: 18.
+
+devetnaest := literalArray2 at: 19.
+devetnaestTokeni := devetnaest findTokens: '"'.
+(devetnaestTokeni at:2) = 'An Exclusive'
+	ifTrue: [ exclusive description: 'Exclusive'. ].
+	
+dvadeset := literalArray2 at: 20.
+dvadesetTokeni := dvadeset findTokens: '"'.
+(dvadesetTokeni at:2) = 'A BaseTask 1'
+	ifTrue: [t3 := NWBaseTask new.].  "fale ovde  value, to je poslednji zadatak iz fajla dsl2.txt"
+	
+dvadesetj := literalArray2 at: 21.
+dvadesetjTokeni := dvadesetj findTokens: '"'.
+(dvadesetjTokeni at: 1) = '		condition '
+		ifTrue: [ exclusive addOutgoingEdge: t3 withCondition: [ :x | (dvadesetjTokeni at: 2) ]. ].
+		
+dvadesetd := literalArray2 at: 22.
+dvadesetdTokeni := dvadesetd findTokens: '"'.
+(dvadesetdTokeni at:2) = 'A BaseTask 2'
+	ifTrue: [ exclusive addOutgoingEdge: t2 withCondition: [ :x | (((literalArray2 at: 23) findTokens: '"') at: 2) ].].
+
+dvadesetc := literalArray2 at: 24.
+
+dvadesetp := literalArray2 at: 25.
+dvadesetpTokeni := dvadesetp findTokens: '"'.
+(dvadesetpTokeni at: 2) = 'A BaseTask 1'
+	ifTrue: [ t3 description: (((literalArray2 at: 26) findTokens: '"') at: 2). 
+		t3 value: (((literalArray2 at: 27) findTokens: '"') at: 2) .
+		(((literalArray2 at: 28) findTokens: '"') at:2)='An EndEvent'
+			ifTrue: [ t3 addOutgoingEdge: ee. ] ].
+
+process := NWProcess id: '1' name: 'process1' initialFlowElement: se.
+engine := WaveEngine new.
+engine addProcess: process name: 'process1' .
+engine startProcess: 'process1'.

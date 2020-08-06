@@ -1,0 +1,29 @@
+Person "Milica" {
+	initial state "A StartEvent" 
+	        description "Start"
+		go to "A ScriptTask"
+
+	activity "A ScriptTask"
+	        description "Generate Random Number"
+		script "10 atRandom"
+		go to "An Exclusive"
+
+	final state "An EndEvent"
+	        description "End"
+
+	activity "A BaseTask 2"
+	        description "B"
+		value "Cool"
+		go to "An EndEvent"
+
+	state "An Exclusive"
+		go to "A BaseTask 1" 
+		condition "x >= 5"
+		go to "A BaseTask 2" 
+		condition "x < 5"
+
+	activity "A BaseTask 1" 
+	        description "C"
+		value "Super Cool"
+		go to "An EndEvent"
+}

@@ -1,7 +1,7 @@
 as yet unclassified
 splitArray: stringArray numberOflementsDsl: aNumberOflementsDsl
 	| arrayOfArrays j k red |
-	arrayOfArrays := Array2D new: 10.
+	arrayOfArrays := Array2D new: aNumberOflementsDsl.
 	"1 to: (arrayOfArrays size) do:
 		[ :each | arrayOfArrays at: each put: (Array new: 10) ]."
 	j := 1.	"brojac reda matrice"

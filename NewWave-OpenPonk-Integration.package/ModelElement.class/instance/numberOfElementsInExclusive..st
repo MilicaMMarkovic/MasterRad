@@ -1,9 +1,9 @@
 as yet unclassified
-numberOfElementsInExclusive: stringArray
+numberOfElementsInExclusive: array2d
 	"comment stating purpose of instance-side message"
 	"scope: class-variables  &  instance-variables"	
 			
-	| numberElements |
+	| numberElements stringArray |
 	numberElements := 0.
 	2 to: (stringArray size-1) do:[ :i | 
 		(stringArray at:i) isNil

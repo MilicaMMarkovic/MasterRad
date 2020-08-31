@@ -13,4 +13,4 @@ numberOfElementsInExclusive: array2d aNumber: aNumberOfElements
 				ifFalse: [ ((red findTokens: '"') at: 1) = '		condition '
 						ifTrue: [ numberElements := numberElements + 1 ] ]
 				ifTrue: [ numberElements := numberElements ] ] ].
-	^ numberElements
+	^ numberElements.

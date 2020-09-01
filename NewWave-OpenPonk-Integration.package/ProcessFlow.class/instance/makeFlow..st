@@ -12,4 +12,4 @@ makeFlow: niz
 	engine := WaveEngine new.
 	engine addProcess: process name: 'process1'.
 	engine startProcess: 'process1'.
-	^ process.
+	^ niz.

@@ -1,9 +1,9 @@
 as yet unclassified
 processArray: array2d numberOfElements: aNumber
-	| k r red se nextElement sc exclusive bt1 ee niz bt2 me numberOfExc |
+	| k r red se sc exclusive bt1 ee niz bt2 me numberOfExc |
 	k := 1.
 	r := 1.
-	niz := OrderedCollection new.
+	niz := OrderedCollection new: aNumber .
 	me := ModelElement new.
 	numberOfExc := me numberOfElementsInExclusive: array2d aNumber: aNumber.
 	1 to: aNumber do: [ :i | 
@@ -33,6 +33,8 @@ processArray: array2d numberOfElements: aNumber
 							bt1 description: (((array2d at: i at: 2) findTokens: '"') at: 2).
 							bt1 value: (((array2d at: i at: 3) findTokens: '"') at: 2).
 							niz add: bt1. 
+							(niz at:(i-1))=exclusive 
+							ifTrue: [ exclusive addOutgoingEdge: bt1 withCondition: (((array2d at: (i-1) at: 2) findTokens: '"') at: 2). Transcript show:'Jeste exclusive prethodni';cr. ].
 							"Ovde treba ispitati da li je Exclusive prethodni element u procesu"
 							 ].
 					(((array2d at: i at: 1) findTokens: '"') at: 2) = 'A BaseTask 2'
@@ -41,21 +43,26 @@ processArray: array2d numberOfElements: aNumber
 							bt2 value: (((array2d at: i at: 3) findTokens: '"') at: 2).
 							"Posto je exclusive, treba ispitati"
 							niz add: bt2. 
-							(niz at: (i-2)) addOutgoingEdge: bt2 withCondition:  [ :x | (((array2d at: i - 2 at: 4) findTokens: '"') at: 2) ] . 
-							(niz at: (i-1)) addOutgoingEdge: bt1 withCondition:  [ :x | (((array2d at: i - 1 at: 2) findTokens: '"') at: 2) ] . ].
+							(niz at:(i-2))=exclusive 
+								ifTrue: [ exclusive addOutgoingEdge: bt2 withCondition: (((array2d at: (i-2) at: 4) findTokens: '"') at: 2). Transcript show:'Jeste exclusive pre 2 elementa';cr. ]
+								ifFalse: [ (niz at: (i-2)) addOutgoingEdge: bt2 withCondition: [ :x | (((array2d at: i - 2 at: 4) findTokens: '"') at: 2) ]. 
+							(niz at: (i-1)) addOutgoingEdge: bt1 withCondition: [ :x | (((array2d at: i - 1 at: 2) findTokens: '"') at: 2) ]. ] ].
 					(((array2d at: i at: 1) findTokens: '"') at: 2) = 'An EndEvent'
-						ifTrue: [ ee := NWEndEvent new.
+						ifTrue: [ ee := NWEndEvent new. 
 							ee description: 'End'.
-							(((array2d at: i - 2 at: 1) findTokens: '"') at: 2)
+							(((array2d at: i - 3 at: 1) findTokens: '"') at: 2)
 								= 'An Exclusive'
 								ifTrue:
-									[ 1 to: numberOfExc do: [ :x | (niz at: (i - x)) addOutgoingEdge: ee ]. ]
-								ifFalse: [ Transcript
-										show: 0;
+									[ "0 to: numberOfExc do: [ :x | (niz at: (i - x)) addOutgoingEdge: ee" 
+										Transcript show: 1;cr.
+										(niz at: (i-1)) addOutgoingEdge: ee.
+										(niz at: (i-2)) addOutgoingEdge: ee.
+									Transcript show: 'Jeste exclusive pre 3 elementa';cr. ]
+								ifFalse: [ Transcript show: 0;
 										cr ].
 							niz add: ee. 
-							(niz at: (i-2)) addOutgoingEdge: ee.
-							(niz at: (i-3)) addOutgoingEdge: ee. ].
+							"(niz at: (i-1)) addOutgoingEdge: ee.
+							(niz at: (i-2)) addOutgoingEdge: ee. " ].
 					]
 				ifTrue: [ "r := r + 1." k := 1 ] ] ].
 	^ niz.

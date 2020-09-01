@@ -19,7 +19,7 @@ processArray: array2d numberOfElements: aNumber
 					(((array2d at: i at: 1) findTokens: '"') at: 2) = 'A ScriptTask'
 						ifTrue: [ sc := NWScriptTask new.
 							sc description: (((array2d at: i at: 2) findTokens: '"') at: 2).
-							sc script: [ (((array2d at: i at: 3) findTokens: '"') at: 2) ].
+							sc script: [ 10 atRandom ].
 							niz add: sc.
 							(niz at: (i - 1)) addOutgoingEdge: sc. ].
 					(((array2d at: i at: 1) findTokens: '"') at: 2) = 'An Exclusive'
@@ -36,7 +36,8 @@ processArray: array2d numberOfElements: aNumber
 							(niz at:(i-1))=exclusive 
 							ifTrue: [ exclusive addOutgoingEdge: bt1 withCondition: (((array2d at: (i-1) at: 2) findTokens: '"') at: 2). Transcript show:'Jeste exclusive prethodni';cr. ].
 							"Ovde treba ispitati da li je Exclusive prethodni element u procesu"
-							 ].
+							 ]
+							ifFalse: [ Transcript show:'nije dobro';cr. ].
 					(((array2d at: i at: 1) findTokens: '"') at: 2) = 'A BaseTask 2'
 						ifTrue: [ bt2 := NWBaseTask new.
 							bt2 description: (((array2d at: i at: 2) findTokens: '"') at: 2).

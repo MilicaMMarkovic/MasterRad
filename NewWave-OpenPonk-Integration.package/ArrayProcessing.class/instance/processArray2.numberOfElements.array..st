@@ -1,24 +1,28 @@
 as yet unclassified
 processArray2: array2d numberOfElements: aNumber array: anArray
-	| k r niz se sc ee exclusive bt1 bt2 |
+	| k r niz se sc ee exclusive bt1 bt2 skripta |
 	k := 1.
 	r := 1.
 	niz := OrderedDictionary new.
 	1 to: aNumber do: [ :e | 
 		(anArray at: e) = 'A StartEvent'
 			ifTrue: [ se := NWStartEvent new.
-				se description: (((array2d at: r at: k + 1) findTokens: '"') at: 2).
+				se
+					description: (((array2d at: r at: k + 1) findTokens: '"') at: 2).
 				niz at: e put: se.
 				k := 1.
 				r := r + 1 ].
 		(anArray at: e) = 'A ScriptTask'
 			ifTrue: [ sc := NWScriptTask new.
 				sc description: (((array2d at: r at: k + 1) findTokens: '"') at: 2).
-				sc script: [ 10 atRandom ].
+				(((((array2d at: r at: k + 2) findTokens: '"') at: 2)
+					findTokens: ' ') at: 2) = 'atRandom'
+					ifTrue: [ skripta := (((array2d at: r at: k + 2) findTokens: '"') at: 2) asInteger.
+						sc script: [ skripta atRandom ] ].
 				niz at: e put: sc.
 				k := 1.
 				r := r + 1.
-				(niz at: (e-1)) addOutgoingEdge:  sc.].
+				(niz at: e - 1) addOutgoingEdge: sc ].
 		(anArray at: e) = 'An Exclusive'
 			ifTrue: [ exclusive := NWExclusive new.
 				exclusive description: 'Exclusive'.
@@ -57,5 +61,5 @@ processArray2: array2d numberOfElements: aNumber array: anArray
 						(niz at: e - 2) addOutgoingEdge: ee ]
 					ifFalse: [ (niz at: e - 1) addOutgoingEdge: ee ].
 				k := 1.
-				r := r + 1 ].  ].  
-^ niz. 
+				r := r + 1 ] ].
+	^ niz

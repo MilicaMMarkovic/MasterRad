@@ -18,7 +18,7 @@ processArray2: array2d numberOfElements: aNumber array: anArray
 				niz at: e put: sc.
 				k := 1.
 				r := r + 1.
-				(niz at: e - 1) addOutgoingEdge: sc ].
+				(niz at: (e-1)) addOutgoingEdge:  sc.].
 		(anArray at: e) = 'An Exclusive'
 			ifTrue: [ exclusive := NWExclusive new.
 				exclusive description: 'Exclusive'.
@@ -28,21 +28,23 @@ processArray2: array2d numberOfElements: aNumber array: anArray
 				(niz at: e - 1) addOutgoingEdge: exclusive ].
 		(anArray at: e) = 'A BaseTask 1'
 			ifTrue: [ bt1 := NWBaseTask new.
-				bt1 description: (((array2d at: r at: k + 1) findTokens: '"') at: 2).
+				bt1
+					description: (((array2d at: r at: k + 1) findTokens: '"') at: 2).
 				bt1 value: (((array2d at: r at: k + 2) findTokens: '"') at: 2).
 				niz at: e put: bt1.
 				(niz at: e - 1) = exclusive
-					ifTrue: [ exclusive addOutgoingEdge: bt1 withCondition: [ :x | x >= 5 ]. ]
+					ifTrue: [ exclusive addOutgoingEdge: bt1 withCondition: [ :x | x >= 5 ] ]
 					ifFalse: [ (niz at: e - 1) addOutgoingEdge: bt1 ].
 				k := 1.
 				r := r + 1 ].
 		(anArray at: e) = 'A BaseTask 2'
 			ifTrue: [ bt2 := NWBaseTask new.
-				bt2 description: (((array2d at: r at: k + 1) findTokens: '"') at: 2).
+				bt2
+					description: (((array2d at: r at: k + 1) findTokens: '"') at: 2).
 				bt2 value: (((array2d at: r at: k + 2) findTokens: '"') at: 2).
 				niz at: e put: bt2.
 				(niz at: e - 2) = exclusive
-					ifTrue: [ exclusive addOutgoingEdge: bt2 withCondition: [ :x | x < 5 ]. ]
+					ifTrue: [ exclusive addOutgoingEdge: bt2 withCondition: [ :x | x < 5 ] ]
 					ifFalse: [ (niz at: e - 1) addOutgoingEdge: bt2 ].
 				k := 1.
 				r := r + 1 ].
@@ -52,8 +54,8 @@ processArray2: array2d numberOfElements: aNumber array: anArray
 				niz at: e put: ee.
 				(niz at: e - 3) = exclusive
 					ifTrue: [ (niz at: e - 1) addOutgoingEdge: ee.
-						(niz at: e - 2) addOutgoingEdge: ee. ]
+						(niz at: e - 2) addOutgoingEdge: ee ]
 					ifFalse: [ (niz at: e - 1) addOutgoingEdge: ee ].
 				k := 1.
-				r := r + 1. ] ].
-	^ niz.
+				r := r + 1 ].  ].  
+^ niz. 

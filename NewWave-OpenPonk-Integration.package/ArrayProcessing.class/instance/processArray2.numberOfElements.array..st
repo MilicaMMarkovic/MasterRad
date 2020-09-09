@@ -1,6 +1,6 @@
 as yet unclassified
 processArray2: array2d numberOfElements: aNumber array: anArray
-	| k r niz se sc ee exclusive bt1 bt2 skripta |
+	| k r niz se sc ee exclusive bt1 bt2 skripta receiver1 message1 result1 |
 	k := 1.
 	r := 1.
 	niz := OrderedDictionary new.
@@ -15,10 +15,10 @@ processArray2: array2d numberOfElements: aNumber array: anArray
 		(anArray at: e) = 'A ScriptTask'
 			ifTrue: [ sc := NWScriptTask new.
 				sc description: (((array2d at: r at: k + 1) findTokens: '"') at: 2).
-				(((((array2d at: r at: k + 2) findTokens: '"') at: 2)
-					findTokens: ' ') at: 2) = 'atRandom'
-					ifTrue: [ skripta := (((array2d at: r at: k + 2) findTokens: '"') at: 2) asInteger.
-						sc script: [ skripta atRandom ] ].
+				receiver1:=((((array2d at: r at:k+2) findTokens: '"')at:2 ) asInteger) .
+				message1:=(((((array2d at: r at:k+2) findTokens: '"')at:2 ) findTokens: ' ')at:2)asSymbol .
+				result1 := receiver1 perform: message1.
+				sc script: [ result1 ] .
 				niz at: e put: sc.
 				k := 1.
 				r := r + 1.

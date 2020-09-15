@@ -1,6 +1,6 @@
 as yet unclassified
 processArray2: array2d numberOfElements: aNumber array: anArray
-	| k r niz se sc ee exclusive bt1 bt2 receiver1 message1 result1 condition1 condition2 receiver keyword1 condition argument1 result receiver2 result2 receiver3 keyword2 argument2 result3 |
+	| k r niz se sc ee exclusive bt1 bt2 receiver1 message1 result1 condition1 condition2 keyword1 argument1 receiver2 result2 receiver3 keyword2 argument2 result3 |
 	k := 1.
 	r := 1.
 	niz := OrderedDictionary new.

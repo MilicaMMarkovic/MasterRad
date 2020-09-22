@@ -18,4 +18,4 @@ integrate: aString
 		array: namesOfElements.
 	process := ProcessFlow new.
 	nwProcess := process makeFlow: nwSequence.
-	^ nwProcess
+	^ nwProcess.

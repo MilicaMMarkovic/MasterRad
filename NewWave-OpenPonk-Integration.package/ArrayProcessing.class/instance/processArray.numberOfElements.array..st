@@ -41,7 +41,7 @@ processArray: array2d numberOfElements: aNumber array: anArray
 				bt1 value: (((array2d at: r at: k + 2) findTokens: '"') at: 2).
 				resultArray at: e put: bt1.
 				(resultArray at: e - 1) = exclusive
-					ifTrue: [ receiver2 := sc script value.
+					ifTrue: [ receiver2 := (((exclusive incomingFlows )at:1)sourceRef) value.
 						keyword1 := (((condition1 findTokens: 'x') at: 1)
 							copyFrom: 1
 							to: condition1 size - 2) asSymbol.
@@ -59,7 +59,7 @@ processArray: array2d numberOfElements: aNumber array: anArray
 				bt2 value: (((array2d at: r at: k + 2) findTokens: '"') at: 2).
 				resultArray at: e put: bt2.
 				(resultArray at: e - 2) = exclusive
-					ifTrue: [ receiver3 := sc script value.
+					ifTrue: [ receiver3 := (((exclusive incomingFlows )at:1)sourceRef) value.
 						keyword2 := (((condition2 findTokens: 'x') at: 1)
 							copyFrom: 1
 							to: condition2 size - 2) asSymbol.
@@ -77,7 +77,7 @@ processArray: array2d numberOfElements: aNumber array: anArray
 				bt3 value: (((array2d at: r at: k + 2) findTokens: '"') at: 2).
 				resultArray at: e put: bt3.
 				(resultArray at: e - 3) = exclusive
-					ifTrue: [ receiver4 := sc script value.
+					ifTrue: [ receiver4 := (((exclusive incomingFlows )at:1)sourceRef) value.
 						keyword3 := (((condition3 findTokens: 'x') at: 1)
 							copyFrom: 1
 							to: condition3 size - 2) asSymbol.
